@@ -25,6 +25,11 @@ public class BlacklistedSite {
 
     }
 
+    public BlacklistedSite(String website, Student student) {
+        this.website = website;
+        this.student = student;
+    }
+
     public Integer getId() {
         return id;
     }

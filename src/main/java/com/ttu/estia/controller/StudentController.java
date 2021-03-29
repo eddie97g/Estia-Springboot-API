@@ -6,6 +6,7 @@ import com.ttu.estia.pojo.AuthenticationResponse;
 import com.ttu.estia.pojo.StudentSignupDto;
 import com.ttu.estia.repository.StudentRepository;
 import com.ttu.estia.service.CustomUserDetailsService;
+import com.ttu.estia.service.StudentService;
 import com.ttu.estia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +36,8 @@ public class StudentController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @GetMapping("/details")
-    private Student getStudent(String username) {
-        Student student = this.studentRepository.findByUsername(username);
-
-        return student;
-    }
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping()
     public String getUsernameAndPassword() {
@@ -73,7 +70,7 @@ public class StudentController {
 
         final UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
-        Student student = getStudent(userDetails.getUsername());
+        Student student = studentService.getStudent(userDetails.getUsername());
         return ResponseEntity.ok(new AuthenticationResponse(jwt, jwtUtil.extractExpiration(jwt).getTime(), student));
     }
 }

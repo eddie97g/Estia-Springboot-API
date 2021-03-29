@@ -18,7 +18,7 @@ public class Student {
     @Column(name="password")
     private String password;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<BlacklistedSite> blacklistedSites;
 
     public Student() {
@@ -60,5 +60,9 @@ public class Student {
 
     public void setBlacklistedSites(List<BlacklistedSite> blacklistedSites) {
         this.blacklistedSites = blacklistedSites;
+    }
+
+    public void addBlacklistedSite(BlacklistedSite blacklistedSite) {
+        this.blacklistedSites.add(blacklistedSite);
     }
 }
