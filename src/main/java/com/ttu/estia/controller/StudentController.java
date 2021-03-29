@@ -1,11 +1,19 @@
 package com.ttu.estia.controller;
 
 import com.ttu.estia.entity.Student;
+import com.ttu.estia.pojo.AuthenticationRequest;
+import com.ttu.estia.pojo.AuthenticationResponse;
+import com.ttu.estia.pojo.StudentSignupDto;
 import com.ttu.estia.repository.StudentRepository;
+import com.ttu.estia.service.CustomUserDetailsService;
+import com.ttu.estia.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student")
@@ -14,6 +22,15 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @GetMapping()
     public String getUsernameAndPassword() {
         this.studentRepository.existsById(1);
@@ -21,5 +38,30 @@ public class StudentController {
         System.out.println("Username: " + student.getUsername() + "... Password: " + student.getPassword());
         return "Username: " + student.getUsername() + "... Password: " + student.getPassword();
 //        return "success";
+    }
+
+    @PostMapping("/signup")
+    public String signup(@RequestBody StudentSignupDto studentSignupDto) {
+
+        Student newStudent = new Student(studentSignupDto.getUsername(), studentSignupDto.getPassword());
+        studentRepository.save(newStudent);
+        return "signup successful";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authRequest) throws Exception {
+
+        try {
+            this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                    (authRequest.getUsername(),
+                            authRequest.getPassword()));
+
+        } catch(BadCredentialsException e) {
+            throw new Exception("Incorrect username or password");
+        }
+
+        final UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(authRequest.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, jwtUtil.extractExpiration(jwt).getTime()));
     }
 }
