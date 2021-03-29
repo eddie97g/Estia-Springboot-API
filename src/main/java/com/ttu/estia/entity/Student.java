@@ -2,6 +2,7 @@ package com.ttu.estia.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name="student")
@@ -65,4 +66,5 @@ public class Student {
     public void addBlacklistedSite(BlacklistedSite blacklistedSite) {
         this.blacklistedSites.add(blacklistedSite);
     }
+
 }

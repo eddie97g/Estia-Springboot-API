@@ -8,10 +8,7 @@ import com.ttu.estia.repository.StudentRepository;
 import com.ttu.estia.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +30,13 @@ public class BlacklistController {
         Student savedStudent = studentService.saveStudent(student);
 
         return ResponseEntity.ok(savedStudent.getBlacklistedSites());
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<List<BlacklistedSite>> deleteSiteFromBlacklist(@RequestBody BlacklistedSiteDto blacklistedSiteDto) {
+
+        blacklistRepo.deleteById(blacklistedSiteDto.getSiteId());
+        Student student = studentService.getStudent(blacklistedSiteDto.getStudentId());
+        return ResponseEntity.ok(student.getBlacklistedSites());
     }
 }
