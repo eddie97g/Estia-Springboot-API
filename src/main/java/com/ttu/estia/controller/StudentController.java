@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +32,9 @@ public class StudentController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping()
     public String getUsernameAndPassword() {
         this.studentRepository.existsById(1);
@@ -43,7 +47,7 @@ public class StudentController {
     @PostMapping("/signup")
     public String signup(@RequestBody StudentSignupDto studentSignupDto) {
 
-        Student newStudent = new Student(studentSignupDto.getUsername(), studentSignupDto.getPassword());
+        Student newStudent = new Student(studentSignupDto.getUsername(), passwordEncoder.encode(studentSignupDto.getPassword()));
         studentRepository.save(newStudent);
         return "signup successful";
     }
