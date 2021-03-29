@@ -1,5 +1,7 @@
 package com.ttu.estia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,7 @@ public class BlacklistedSite {
 
     @ManyToOne
     @JoinColumn(name="studentID")
+    @JsonIgnore
     private Student student;
 
     public BlacklistedSite() {
