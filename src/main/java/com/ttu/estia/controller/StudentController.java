@@ -35,6 +35,13 @@ public class StudentController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+//    @GetMapping("/details")
+    private Student getStudent(String username) {
+        Student student = this.studentRepository.findByUsername(username);
+
+        return student;
+    }
+
     @GetMapping()
     public String getUsernameAndPassword() {
         this.studentRepository.existsById(1);
@@ -66,6 +73,7 @@ public class StudentController {
 
         final UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, jwtUtil.extractExpiration(jwt).getTime()));
+        Student student = getStudent(userDetails.getUsername());
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, jwtUtil.extractExpiration(jwt).getTime(), student));
     }
 }
