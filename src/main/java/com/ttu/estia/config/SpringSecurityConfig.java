@@ -47,11 +47,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable();
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/books/add").authenticated()
-                .antMatchers(HttpMethod.PUT, "/books").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/books/delete/{\\d+}").authenticated()
                 .antMatchers(HttpMethod.POST, "/blacklist/add").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/blacklist/delete").authenticated()
+                .antMatchers(HttpMethod.POST, "/calendar/add").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/calendar/delete").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -39,15 +39,6 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping()
-    public String getUsernameAndPassword() {
-        this.studentRepository.existsById(1);
-        Student student = this.studentRepository.findByUsername("eddieg");
-        System.out.println("Username: " + student.getUsername() + "... Password: " + student.getPassword());
-        return "Username: " + student.getUsername() + "... Password: " + student.getPassword();
-//        return "success";
-    }
-
     @PostMapping("/signup")
     public String signup(@RequestBody StudentSignupDto studentSignupDto) {
 

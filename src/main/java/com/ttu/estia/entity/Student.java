@@ -22,6 +22,9 @@ public class Student {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<BlacklistedSite> blacklistedSites;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private List<CalendarEvent> calendarEvents;
+
     public Student() {
 
     }
@@ -67,4 +70,15 @@ public class Student {
         this.blacklistedSites.add(blacklistedSite);
     }
 
+    public List<CalendarEvent> getCalendarEvents() {
+        return calendarEvents;
+    }
+
+    public void setCalendarEvents(List<CalendarEvent> calendarEvents) {
+        this.calendarEvents = calendarEvents;
+    }
+
+    public void addCalendarEvent(CalendarEvent calendarEvent) {
+        this.calendarEvents.add(calendarEvent);
+    }
 }
