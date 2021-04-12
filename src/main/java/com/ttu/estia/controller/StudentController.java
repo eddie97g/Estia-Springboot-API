@@ -47,6 +47,11 @@ public class StudentController {
         return "signup successful";
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authRequest) throws Exception {
 
