@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -68,5 +70,13 @@ public class StudentController {
         final String jwt = jwtUtil.generateToken(userDetails);
         Student student = studentService.getStudent(userDetails.getUsername());
         return ResponseEntity.ok(new AuthenticationResponse(jwt, jwtUtil.extractExpiration(jwt).getTime(), student));
+    }
+
+    @PutMapping("/youtube")
+    public String updateYoutubeLink(@RequestBody Student student) {
+        Optional<Student> studentDB = this.studentRepository.findById(student.getId());
+        studentDB.get().setYoutubeEmbedId(student.getYoutubeEmbedId());
+        this.studentRepository.save(studentDB.get());
+        return "updated youtube link";
     }
 }

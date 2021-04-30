@@ -19,6 +19,9 @@ public class Student {
     @Column(name="password")
     private String password;
 
+    @Column(name="youtube_embed_id")
+    private String youtubeEmbedId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<BlacklistedSite> blacklistedSites;
 
@@ -80,5 +83,13 @@ public class Student {
 
     public void addCalendarEvent(CalendarEvent calendarEvent) {
         this.calendarEvents.add(calendarEvent);
+    }
+
+    public String getYoutubeEmbedId() {
+        return youtubeEmbedId;
+    }
+
+    public void setYoutubeEmbedId(String youtubeEmbedId) {
+        this.youtubeEmbedId = youtubeEmbedId;
     }
 }
