@@ -51,6 +51,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/blacklist/delete").authenticated()
                 .antMatchers(HttpMethod.POST, "/calendar/add").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/calendar/delete").authenticated()
+                .antMatchers(HttpMethod.PUT, "/student/preferences").authenticated()
+                .antMatchers(HttpMethod.PUT, "/student/youtube").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
