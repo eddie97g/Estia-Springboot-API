@@ -28,6 +28,9 @@ public class Student {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<CalendarEvent> calendarEvents;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "student")
+    private StudyPreferences studyPreferences;
+
     public Student() {
 
     }
@@ -91,5 +94,13 @@ public class Student {
 
     public void setYoutubeEmbedId(String youtubeEmbedId) {
         this.youtubeEmbedId = youtubeEmbedId;
+    }
+
+    public StudyPreferences getStudyPreferences() {
+        return studyPreferences;
+    }
+
+    public void setStudyPreferences(StudyPreferences studyPreferences) {
+        this.studyPreferences = studyPreferences;
     }
 }
